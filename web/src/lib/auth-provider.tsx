@@ -2,10 +2,7 @@
 
 import { createContext, use, type ReactNode } from "react";
 
-// import type { ServerUser } from "./server-auth";
-
-// TODO: Replace with proper type from migrated auth system
-type ServerUser = any;
+import type { ServerUser } from "./server-auth";
 
 interface AuthContextValue {
   user: ServerUser | null;

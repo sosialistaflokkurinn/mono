@@ -17,7 +17,7 @@ function DashboardPage() {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
               <span className="font-medium text-zinc-700">Name:</span>
-              <p className="text-zinc-900">{user.name}</p>
+              <p className="text-zinc-900">{user.fullName}</p>
             </div>
             <div>
               <span className="font-medium text-zinc-700">Role:</span>
@@ -25,7 +25,7 @@ function DashboardPage() {
             </div>
             <div>
               <span className="font-medium text-zinc-700">User ID:</span>
-              <p className="font-mono text-sm text-zinc-900">{user.userId}</p>
+              <p className="font-mono text-sm text-zinc-900">{user.id}</p>
             </div>
           </div>
         </div>

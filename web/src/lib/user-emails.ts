@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import { eq } from "drizzle-orm";
 
 import { db, User } from "@xj/db";
@@ -36,9 +35,7 @@ export async function sendWelcomeEmailToUser({
   });
 
   emailResult.orTee((error) => {
-    Sentry.captureException(new Error("Failed to send welcome email"), {
-      extra: { error, userId, email },
-    });
+    console.error("Failed to send welcome email", { error, userId, email });
     // Don't throw - email failure shouldn't block user verification
   });
 

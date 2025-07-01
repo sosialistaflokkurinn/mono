@@ -6,7 +6,7 @@ import { Heading } from "~/components/ui/heading";
 function LoginPage() {
   const search = Route.useSearch();
   const next: string = 
-    typeof search.next === "string" ? decodeURIComponent(search.next) : "/";
+    typeof search["next"] === "string" ? decodeURIComponent(search["next"]) : "/";
 
   const handleKenniAuth = async () => {
     // For now, redirect to a placeholder URL
@@ -70,7 +70,7 @@ function LoginPage() {
 
 export const Route = createFileRoute("/login")({
   validateSearch: (search: Record<string, unknown>) => ({
-    next: search.next as string | undefined,
+    next: search["next"] as string | undefined,
   }),
   component: LoginPage,
 });

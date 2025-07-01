@@ -1,4 +1,7 @@
 {
   "extends": ["../../oxlint-base.json"],
-  "ignorePatterns": ["node_modules", "dist", "**/*.d.ts"]
+  "ignorePatterns": ["node_modules", "dist", "**/*.d.ts"],
+  "rules": {
+    "id-length": "off"
+  }
 }
