@@ -1,0 +1,21 @@
+{
+  "env": {
+    "builtin": true,
+    "es2025": true,
+    "node": true,
+    "shared-node-browser": true
+  },
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "sort-imports": "off",
+    "unicorn/filename-case": "off",
+    "no-magic-numbers": "off",
+    "max-depth": "off",
+    "max-lines-per-function": "off",
+    "func-style": "off"
+  }
+}

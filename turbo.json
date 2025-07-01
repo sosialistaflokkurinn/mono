@@ -1,0 +1,48 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "DATABASE_URL",
+    "SESSION_SECRET",
+    "JWT_SECRET",
+    "KENNI_CLIENT_ID",
+    "KENNI_CLIENT_SECRET",
+    "KENNI_ISSUER_URL",
+    "POSTMARK_SERVER_API_TOKEN",
+    "VITE_HOSTNAME",
+    "NODE_ENV"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "type-check", "lint"],
+      "outputs": [".output/**", ".tanstack/**", "dist/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "lint:fix": {
+      "dependsOn": ["^lint:fix"],
+      "cache": false
+    },
+    "type-check": {
+      "dependsOn": ["^type-check"]
+    },
+    "format": {
+      "outputs": []
+    },
+    "format:check": {},
+    "db:up": {
+      "cache": false,
+      "persistent": true
+    },
+    "tunnel:up": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
