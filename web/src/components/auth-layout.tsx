@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { AuthProvider } from "~/lib/auth-provider";
-// import { getServerUser } from "~/lib/server-auth";
+import { getServerUser } from "~/lib/server-auth";
 
 import { AuthNavbar } from "./auth-navbar";
 import { StackedLayout } from "./ui/stacked-layout";
@@ -13,12 +13,9 @@ interface AuthLayoutProps {
 
 /**
  * Layout component for authenticated sections
- * TODO: Re-enable server-side auth fetching
  */
-export function AuthLayout({ children, sidebar }: AuthLayoutProps) {
-  // TODO: Fetch user data on the server
-  // const serverUser = await getServerUser();
-  const serverUser = null; // Placeholder
+export async function AuthLayout({ children, sidebar }: AuthLayoutProps) {
+  const serverUser = await getServerUser();
 
   return (
     <AuthProvider initialUser={serverUser}>

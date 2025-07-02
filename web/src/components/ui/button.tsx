@@ -1,63 +1,107 @@
-"use client";
-
-import { cva, type VariantProps } from "class-variance-authority";
-import * as React from "react";
 import {
-  Button as AriaButton,
+  Button as ButtonPrimitive,
   composeRenderProps,
-  type ButtonProps as AriaButtonProps,
+  type ButtonProps as ButtonPrimitiveProps,
 } from "react-aria-components";
-import { twMerge } from "tailwind-merge";
+import { tv } from "tailwind-variants";
 
-const buttonVariants = cva(
-  [
-    "inline-flex items-center justify-center text-sm text-center transition rounded-lg border border-black/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] cursor-default bg-white",
-    "data-[disabled]:bg-gray-100 data-[disabled]:text-gray-300 data-[disabled]:border-black/5",
-    "data-[focus-visible]:outline-none data-[focus-visible]:ring-2 data-[focus-visible]:ring-blue-600 data-[focus-visible]:ring-offset-2",
+const buttonStyles = tv({
+  base: [
+    "relative isolate inline-flex items-center justify-center gap-x-2 font-medium",
+    "outline-0 outline-offset-2 hover:no-underline focus-visible:outline-2",
+    "inset-ring inset-ring-fg/20 bg-(--btn-bg) pressed:bg-(--btn-overlay) text-(--btn-fg) shadow-[shadow:inset_0_2px_--theme(--color-white/15%)] hover:bg-(--btn-overlay) dark:inset-ring-fg/15 dark:shadow-none",
+    "forced-colors:outline-[Highlight] forced-colors:[--btn-icon:ButtonText] forced-colors:hover:[--btn-icon:ButtonText]",
+    "*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-1 *:data-[slot=icon]:size-4 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:text-current/60 pressed:*:data-[slot=icon]:text-current *:data-[slot=icon]:transition hover:*:data-[slot=icon]:text-current/90",
+    "*:data-[slot=avatar]:-mx-0.5 *:data-[slot=avatar]:my-1 *:data-[slot=avatar]:*:size-4 *:data-[slot=avatar]:size-4 *:data-[slot=avatar]:shrink-0",
   ],
-  {
-    variants: {
-      variant: {
-        primary:
-          "bg-blue-600 data-[hovered]:bg-blue-700 data-[pressed]:bg-blue-800 text-white",
-        secondary:
-          "bg-gray-100 data-[hovered]:bg-gray-200 data-[pressed]:bg-gray-300 text-gray-800",
-        destructive:
-          "bg-red-700 data-[hovered]:bg-red-800 data-[pressed]:bg-red-900 text-white",
-        icon: "border-0 p-1 flex items-center justify-center text-gray-600 data-[hovered]:bg-black/[5%] data-[pressed]:bg-black/10 data-[disabled]:bg-transparent",
-      },
-      size: {
-        default: "px-5 py-2",
-        sm: "px-3 py-1.5 text-xs",
-        lg: "px-6 py-3 text-base",
-        icon: "p-1",
-      },
+  variants: {
+    intent: {
+      primary: [
+        "outline-primary [--btn-bg:theme(--color-primary/95%)] [--btn-fg:var(--color-primary-fg)] [--btn-overlay:var(--color-primary)]",
+      ],
+      secondary: [
+        "outline-primary [--btn-bg:theme(--color-secondary/90%)] [--btn-fg:var(--color-secondary-fg)] [--btn-overlay:var(--color-secondary)]",
+      ],
+      warning: [
+        "outline-warning [--btn-bg:theme(--color-warning/95%)] [--btn-fg:var(--color-warning-fg)] [--btn-overlay:var(--color-warning)]",
+      ],
+      danger: [
+        "outline-danger [--btn-bg:theme(--color-danger/95%)] [--btn-fg:var(--color-danger-fg)] [--btn-overlay:var(--color-danger)]",
+      ],
+      outline: [
+        "shadow-none outline-primary [--btn-fg:var(--color-fg)] [--btn-overlay:theme(--color-secondary/90%)]",
+      ],
+      plain: [
+        "inset-ring-transparent shadow-none outline-primary [--btn-fg:var(--color-fg)] [--btn-overlay:theme(--color-secondary/90%)] dark:inset-ring-transparent",
+      ],
     },
-    defaultVariants: {
-      variant: "primary",
-      size: "default",
+    size: {
+      "extra-small":
+        "h-8 px-[calc(var(--spacing)*2.7)] text-xs/4 **:data-[slot=avatar]:*:size-3.5 **:data-[slot=avatar]:size-3.5 **:data-[slot=icon]:size-3 lg:text-[0.800rem]/4",
+      small: "h-9 px-3.5 text-sm/5 sm:text-sm/5",
+      medium: "h-10 px-4 text-base sm:text-sm/6",
+      large:
+        "h-11 px-4.5 text-base *:data-[slot=icon]:mx-[-1.5px] sm:*:data-[slot=icon]:size-5 lg:text-base/7",
+      "square-petite": "size-9 shrink-0",
+    },
+    shape: {
+      square: "rounded-lg",
+      circle: "rounded-full",
+    },
+    isDisabled: {
+      false: "cursor-pointer forced-colors:disabled:text-[GrayText]",
+      true: "inset-shadow-none cursor-default border-0 opacity-50 ring-0 dark:inset-ring-0 forced-colors:disabled:text-[GrayText]",
+    },
+    isPending: {
+      true: "cursor-default opacity-50",
     },
   },
-);
-
-export interface ButtonProps
-  extends AriaButtonProps,
-    VariantProps<typeof buttonVariants> {}
-
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, ...props }, ref) => {
-    return (
-      <AriaButton
-        className={composeRenderProps(className, (className) =>
-          twMerge(buttonVariants({ variant, size }), className),
-        )}
-        {...props}
-        ref={ref}
-      />
-    );
+  defaultVariants: {
+    intent: "primary",
+    size: "medium",
+    shape: "square",
   },
-);
+});
 
-Button.displayName = "Button";
+interface ButtonProps extends ButtonPrimitiveProps {
+  intent?: "primary" | "secondary" | "danger" | "warning" | "outline" | "plain";
+  size?: "medium" | "large" | "square-petite" | "extra-small" | "small";
+  shape?: "square" | "circle";
+  ref?: React.Ref<HTMLButtonElement>;
+}
 
-export { Button, buttonVariants };
+const Button = ({
+  className,
+  intent,
+  size,
+  shape,
+  ref,
+  ...props
+}: ButtonProps) => {
+  return (
+    <ButtonPrimitive
+      ref={ref}
+      {...props}
+      className={composeRenderProps(className, (className, renderProps) =>
+        buttonStyles({
+          ...renderProps,
+          intent,
+          size,
+          shape,
+          className,
+        }),
+      )}
+    >
+      {(values) => (
+        <>
+          {typeof props.children === "function"
+            ? props.children(values)
+            : props.children}
+        </>
+      )}
+    </ButtonPrimitive>
+  );
+};
+
+export { Button, buttonStyles };
+export type { ButtonProps };

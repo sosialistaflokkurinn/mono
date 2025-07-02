@@ -1,97 +1,136 @@
-import React from "react";
 import {
   composeRenderProps,
+  FieldError as FieldErrorPrimitive,
   Group,
-  FieldError as RACFieldError,
-  Input as RACInput,
-  Label as RACLabel,
+  Input as InputPrimitive,
+  Label as LabelPrimitive,
   Text,
-  type FieldErrorProps,
+  type FieldErrorProps as FieldErrorPrimitiveProps,
   type GroupProps,
-  type InputProps,
+  type InputProps as InputPrimitiveProps,
   type LabelProps,
+  type TextFieldProps as TextFieldPrimitiveProps,
   type TextProps,
+  type ValidationResult,
 } from "react-aria-components";
-import { twMerge } from "tailwind-merge";
 import { tv } from "tailwind-variants";
 
-import { composeTailwindRenderProps, focusRing } from "./utils";
+import { focusStyles } from "./primitive";
+import { composeTailwindRenderProps } from "./utils";
 
-export function Label(props: LabelProps) {
-  return (
-    <RACLabel
-      {...props}
-      className={twMerge(
-        "w-fit cursor-default text-sm font-medium text-gray-500 dark:text-zinc-400",
-        props.className,
-      )}
-    />
-  );
+interface FieldProps {
+  label?: string;
+  placeholder?: string;
+  description?: string;
+  errorMessage?: string | ((validation: ValidationResult) => string);
+  "aria-label"?: TextFieldPrimitiveProps["aria-label"];
+  "aria-labelledby"?: TextFieldPrimitiveProps["aria-labelledby"];
 }
 
-export function Description(props: TextProps) {
+const fieldStyles = tv({
+  slots: {
+    description: "text-pretty text-muted-fg text-sm/6",
+    label: "w-fit cursor-default font-medium text-secondary-fg text-sm/6",
+    fieldError: "text-danger text-sm/6 forced-colors:text-[Mark]",
+  },
+});
+
+const { description, label, fieldError } = fieldStyles();
+
+const Label = ({ className, ...props }: LabelProps) => {
+  return <LabelPrimitive {...props} className={label({ className })} />;
+};
+
+interface DescriptionProps extends TextProps {
+  isWarning?: boolean;
+  ref?: React.RefObject<HTMLElement>;
+}
+
+const Description = ({ ref, className, ...props }: DescriptionProps) => {
+  const isWarning = props.isWarning ?? false;
   return (
     <Text
+      ref={ref}
       {...props}
       slot="description"
-      className={twMerge("text-sm text-gray-600", props.className)}
+      className={description({
+        className: isWarning ? "text-warning" : className,
+      })}
     />
   );
-}
+};
 
-export function FieldError(props: FieldErrorProps) {
+interface FieldErrorProps extends FieldErrorPrimitiveProps {
+  ref?: React.RefObject<HTMLElement>;
+}
+const FieldError = ({ className, ref, ...props }: FieldErrorProps) => {
   return (
-    <RACFieldError
+    <FieldErrorPrimitive
+      ref={ref}
       {...props}
-      className={composeTailwindRenderProps(
-        props.className,
-        "text-sm text-red-600 forced-colors:text-[Mark]",
-      )}
+      className={composeTailwindRenderProps(className, fieldError())}
     />
   );
-}
+};
 
-export const fieldBorderStyles = tv({
+const fieldGroupStyles = tv({
+  base: [
+    "group flex h-10 items-center overflow-hidden rounded-lg border border-input shadow-xs transition duration-200 ease-out",
+    "relative focus-within:ring-4 group-invalid:focus-within:border-danger group-invalid:focus-within:ring-danger/20",
+    "[&>[role=progressbar]:first-child]:ml-2.5 [&>[role=progressbar]:last-child]:mr-2.5",
+    "**:data-[slot=icon]:size-4 **:data-[slot=icon]:shrink-0 **:[button]:shrink-0",
+    "[&>button:has([data-slot=icon]):first-child]:left-0 [&>button:has([data-slot=icon]):last-child]:right-0 [&>button:has([data-slot=icon])]:absolute",
+    "*:data-[slot=icon]:pointer-events-none *:data-[slot=icon]:absolute *:data-[slot=icon]:top-[calc(var(--spacing)*2.7)] *:data-[slot=icon]:z-10 *:data-[slot=icon]:size-4 *:data-[slot=icon]:text-muted-fg",
+    "[&>[data-slot=icon]:first-child]:left-2.5 [&>[data-slot=icon]:last-child]:right-2.5",
+    "[&:has([data-slot=icon]+input)]:pl-6 [&:has(input+[data-slot=icon])]:pr-6",
+    "[&:has([data-slot=icon]+[role=group])]:pl-6 [&:has([role=group]+[data-slot=icon])]:pr-6",
+    "has-[[data-slot=icon]:last-child]:[&_input]:pr-7",
+    "*:[button]:h-8 *:[button]:rounded-[calc(var(--radius-sm)-1px)] *:[button]:px-2.5",
+    "[&>button:first-child]:ml-[calc(var(--spacing)*0.7)] [&>button:last-child]:mr-[calc(var(--spacing)*0.7)]",
+  ],
   variants: {
-    isFocusWithin: {
-      false:
-        "border-gray-300 dark:border-zinc-500 forced-colors:border-[ButtonBorder]",
-      true: "border-gray-600 dark:border-zinc-300 forced-colors:border-[Highlight]",
-    },
-    isInvalid: {
-      true: "border-red-600 dark:border-red-600 forced-colors:border-[Mark]",
-    },
+    isFocusWithin: focusStyles.variants.isFocused,
+    isInvalid: focusStyles.variants.isInvalid,
     isDisabled: {
-      true: "border-gray-200 dark:border-zinc-700 forced-colors:border-[GrayText]",
+      true: "opacity-50 forced-colors:border-[GrayText]",
     },
   },
 });
 
-export const fieldGroupStyles = tv({
-  extend: focusRing,
-  base: "group flex items-center h-9 bg-white dark:bg-zinc-900 forced-colors:bg-[Field] border-2 rounded-lg overflow-hidden",
-  variants: fieldBorderStyles.variants,
-});
-
-export function FieldGroup(props: GroupProps) {
+interface FieldGroupProps extends GroupProps {
+  ref?: React.RefObject<HTMLDivElement>;
+}
+const FieldGroup = ({ className, ref, ...props }: FieldGroupProps) => {
   return (
     <Group
       {...props}
-      className={composeRenderProps(props.className, (className, renderProps) =>
-        fieldGroupStyles({ ...renderProps, className }),
+      ref={ref}
+      className={composeRenderProps(className, (className, renderProps) =>
+        fieldGroupStyles({
+          ...renderProps,
+          className,
+        }),
       )}
     />
   );
+};
+
+interface InputProps extends InputPrimitiveProps {
+  ref?: React.RefObject<HTMLInputElement>;
 }
 
-export function Input(props: InputProps) {
+const Input = ({ className, ref, ...props }: InputProps) => {
   return (
-    <RACInput
+    <InputPrimitive
+      ref={ref}
       {...props}
       className={composeTailwindRenderProps(
-        props.className,
-        "min-w-0 flex-1 bg-white px-2 py-1.5 text-sm text-gray-800 outline outline-0 disabled:text-gray-200 dark:bg-zinc-900 dark:text-zinc-200 dark:disabled:text-zinc-600",
+        className,
+        "text-fg placeholder-muted-fg outline-hidden focus:outline-hidden w-full min-w-0 bg-transparent px-2.5 py-2 text-base sm:text-sm/6 [&::-ms-reveal]:hidden [&::-webkit-search-cancel-button]:hidden",
       )}
     />
   );
-}
+};
+
+export { Description, FieldError, FieldGroup, fieldStyles, Input, Label };
+export type { FieldErrorProps, FieldProps, InputProps };

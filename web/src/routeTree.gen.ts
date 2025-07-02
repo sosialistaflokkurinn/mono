@@ -16,7 +16,6 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppProfileRouteImport } from './routes/_app/profile'
-import { Route as AppDemoRouteImport } from './routes/_app/demo'
 import { Route as AppDashboardRouteImport } from './routes/_app/dashboard'
 import { ServerRoute as ApiAuthLogoutServerRouteImport } from './routes/api/auth/logout'
 import { ServerRoute as ApiAuthLoginServerRouteImport } from './routes/api/auth/login'
@@ -48,11 +47,6 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
-const AppDemoRoute = AppDemoRouteImport.update({
-  id: '/demo',
-  path: '/demo',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -79,7 +73,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AppDashboardRoute
-  '/demo': typeof AppDemoRoute
   '/profile': typeof AppProfileRoute
 }
 export interface FileRoutesByTo {
@@ -87,7 +80,6 @@ export interface FileRoutesByTo {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/dashboard': typeof AppDashboardRoute
-  '/demo': typeof AppDemoRoute
   '/profile': typeof AppProfileRoute
 }
 export interface FileRoutesById {
@@ -97,14 +89,13 @@ export interface FileRoutesById {
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
   '/_app/dashboard': typeof AppDashboardRoute
-  '/_app/demo': typeof AppDemoRoute
   '/_app/profile': typeof AppProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/login' | '/dashboard' | '/demo' | '/profile'
+  fullPaths: '/' | '/admin' | '/login' | '/dashboard' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/login' | '/dashboard' | '/demo' | '/profile'
+  to: '/' | '/admin' | '/login' | '/dashboard' | '/profile'
   id:
     | '__root__'
     | '/'
@@ -112,7 +103,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/login'
     | '/_app/dashboard'
-    | '/_app/demo'
     | '/_app/profile'
   fileRoutesById: FileRoutesById
 }
@@ -189,13 +179,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
-    '/_app/demo': {
-      id: '/_app/demo'
-      path: '/demo'
-      fullPath: '/demo'
-      preLoaderRoute: typeof AppDemoRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/_app/dashboard': {
       id: '/_app/dashboard'
       path: '/dashboard'
@@ -233,13 +216,11 @@ declare module '@tanstack/react-start/server' {
 
 interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
-  AppDemoRoute: typeof AppDemoRoute
   AppProfileRoute: typeof AppProfileRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
-  AppDemoRoute: AppDemoRoute,
   AppProfileRoute: AppProfileRoute,
 }
 
