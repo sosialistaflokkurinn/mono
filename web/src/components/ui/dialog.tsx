@@ -4,8 +4,8 @@ import {
 	Button as ButtonPrimitive,
 	Dialog as DialogPrimitive,
 	Heading,
-	Text,
 	type HeadingProps,
+	Text,
 } from "react-aria-components";
 import { twJoin, twMerge } from "tailwind-merge";
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+/** biome-ignore-all lint/correctness/noNodejsModules: this is run on host */
 import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";

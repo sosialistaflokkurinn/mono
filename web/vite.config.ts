@@ -10,9 +10,9 @@ export default defineConfig({
 		allowedHosts: true,
 	},
 	plugins: [
-		tailwindcss(),
 		// Enables Vite to resolve imports using path aliases.
 		tsconfigPaths(),
 		tanstackStart(),
+		tailwindcss(),
 	],
 });

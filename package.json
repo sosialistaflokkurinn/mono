@@ -10,10 +10,8 @@
 	"scripts": {
 		"build": "turbo build",
 		"dev": "turbo dev",
-		"format": "biome format --write .",
-		"format:check": "biome format .",
-		"lint": "turbo lint",
-		"lint:fix": "turbo lint:fix",
+		"format-and-lint": "biome check . --assist-enabled=false",
+		"format-and-lint:fix": "biome check . --write",
 		"type-check": "turbo type-check"
 	},
 	"devDependencies": {

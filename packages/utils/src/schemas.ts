@@ -1,5 +1,5 @@
 import { err, ok, type Result } from "neverthrow";
-import type { z, ZodError, ZodSchema } from "zod";
+import type { ZodError, ZodSchema, z } from "zod";
 
 export interface ZodParseError<T> {
 	type: "zod";

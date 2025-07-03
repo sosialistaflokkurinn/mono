@@ -62,7 +62,7 @@ function LoginPage() {
 
 export const Route = createFileRoute("/login")({
 	validateSearch: (search: Record<string, unknown>) => ({
-		next: search.next as string | undefined,
+		next: search["next"] as string | undefined,
 	}),
 	component: LoginPage,
 });

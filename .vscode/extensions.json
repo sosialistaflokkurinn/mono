@@ -1,6 +1,3 @@
 {
-  "recommendations": [
-    "anthropic.claude-code",
-    "biomejs.biome"
-  ]
+	"recommendations": ["anthropic.claude-code", "biomejs.biome"]
 }

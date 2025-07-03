@@ -1,10 +1,10 @@
 import {
 	composeRenderProps,
+	type DialogProps,
 	DialogTrigger,
+	type DialogTriggerProps,
 	Modal,
 	ModalOverlay,
-	type DialogProps,
-	type DialogTriggerProps,
 	type ModalOverlayProps,
 } from "react-aria-components";
 import { tv, type VariantProps } from "tailwind-variants";

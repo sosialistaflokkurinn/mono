@@ -1,5 +1,5 @@
-export * from "./fetch";
-export * from "./schemas";
+export * from "./fetch.ts";
+export * from "./schemas.ts";
 
 export type NonEmptyArray<T> = [T, ...T[]];
 

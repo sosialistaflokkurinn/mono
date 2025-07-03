@@ -2,12 +2,12 @@ import { IconEye, IconEyeClosed } from "@intentui/icons";
 import { useState } from "react";
 import {
 	Button as ButtonPrimitive,
-	TextField as TextFieldPrimitive,
 	type InputProps,
+	TextField as TextFieldPrimitive,
 	type TextFieldProps as TextFieldPrimitiveProps,
 } from "react-aria-components";
 
-import { Description, FieldError, FieldGroup, Input, Label, type FieldProps } from "./field.tsx";
+import { Description, FieldError, FieldGroup, type FieldProps, Input, Label } from "./field.tsx";
 import { Loader } from "./loader.tsx";
 import { composeTailwindRenderProps } from "./utils.ts";
 

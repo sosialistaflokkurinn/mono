@@ -7,10 +7,6 @@
 		"build": "vite build",
 		"dev": "vite dev",
 		"dev:local": "vite dev",
-		"format": "biome format --write .",
-		"format:check": "biome format .",
-		"lint": "biome lint .",
-		"lint:fix": "biome lint --fix .",
 		"start": "node .output/server/index.mjs",
 		"tunnel:up": "node scripts/dev-with-tunnel.mjs",
 		"type-check": "tsc --noEmit"

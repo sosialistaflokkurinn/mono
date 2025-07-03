@@ -1,7 +1,7 @@
 import {
 	Button as ButtonPrimitive,
-	composeRenderProps,
 	type ButtonProps as ButtonPrimitiveProps,
+	composeRenderProps,
 } from "react-aria-components";
 import { tv } from "tailwind-variants";
 

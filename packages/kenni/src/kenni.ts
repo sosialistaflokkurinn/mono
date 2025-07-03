@@ -1,7 +1,7 @@
 import {
-	joseAlgorithmRS256,
 	JWSRegisteredHeaders,
 	JWTRegisteredClaims,
+	joseAlgorithmRS256,
 	parseJWT,
 } from "@oslojs/jwt";
 import { safeFetch, safeZodParse } from "@xj/utils";

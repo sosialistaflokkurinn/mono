@@ -23,11 +23,23 @@
 	},
 	"linter": {
 		"enabled": true,
+		"includes": [
+			"**",
+			"!**/node_modules",
+			"!**/.next",
+			"!**/dist",
+			"!**/.turbo",
+			"!**/*.lock",
+			"!**/*.log",
+			"!**/pnpm-lock.yaml",
+			"!packages/db/drizzle/",
+			"!web/src/routeTree.gen.ts"
+		],
 		"rules": {
 			"recommended": true,
 			"correctness": {
-				"noNodejsModules": "off",
-				"useImportExtensions": "off"
+				"noNodejsModules": "on",
+				"useImportExtensions": "on"
 			},
 			"complexity": {
 				"useLiteralKeys": "off"
