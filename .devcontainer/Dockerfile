@@ -22,7 +22,6 @@ RUN apt-get update && apt-get install -y \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
-
 # Install GitHub CLI
 RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
     && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
@@ -68,7 +67,6 @@ USER root
 # Set up workspace directory
 RUN mkdir -p /workspaces/xj-mono
 WORKDIR /workspaces/xj-mono
-
 
 # Switch to node user for development
 USER $USERNAME

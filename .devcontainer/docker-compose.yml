@@ -10,7 +10,6 @@ services:
       - xj-node-modules:/workspaces/xj-mono/node_modules
       - xj-web-node-modules:/workspaces/xj-mono/web/node_modules
       - xj-packages-db-node-modules:/workspaces/xj-mono/packages/db/node_modules
-      - ../.claude.json:/home/node/.claude.json
     command: sleep infinity
     ports:
       - "4200:4200"

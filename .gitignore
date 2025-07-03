@@ -128,3 +128,6 @@ Thumbs.db
 # Claude
 .claude/
 .claude.json
+
+# User Config
+.config/

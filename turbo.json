@@ -1,6 +1,5 @@
 {
 	"$schema": "https://turbo.build/schema.json",
-	"ui": "tui",
 	"globalDependencies": ["**/.env.*local"],
 	"globalEnv": [
 		"DATABASE_URL",
@@ -21,10 +20,6 @@
 		"build": {
 			"dependsOn": ["^build", "type-check"],
 			"outputs": [".output/**", ".tanstack/**", "dist/**"]
-		},
-		"dev": {
-			"cache": false,
-			"persistent": true
 		},
 		"type-check": {
 			"dependsOn": ["^type-check"]

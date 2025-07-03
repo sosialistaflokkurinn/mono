@@ -6,9 +6,7 @@
 	"scripts": {
 		"build": "vite build",
 		"dev": "vite dev",
-		"dev:local": "vite dev",
 		"start": "node .output/server/index.mjs",
-		"tunnel:up": "node scripts/dev-with-tunnel.mjs",
 		"type-check": "tsc --noEmit"
 	},
 	"dependencies": {

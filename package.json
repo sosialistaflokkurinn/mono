@@ -4,12 +4,11 @@
 	"description": "",
 	"keywords": [],
 	"license": "ISC",
-	"author": "Jökull Sólberg",
+	"author": "Sósíalistaflokkur Íslands",
 	"type": "module",
 	"main": "index.js",
 	"scripts": {
 		"build": "turbo build",
-		"dev": "turbo dev",
 		"format-and-lint": "biome check . --assist-enabled=false",
 		"format-and-lint:fix": "biome check . --write",
 		"type-check": "turbo type-check"

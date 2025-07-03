@@ -51,5 +51,11 @@
 		"source=xj-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
 		"source=${localWorkspaceFolder}/.claude,target=/home/node/.claude,type=bind",
 		"source=${localWorkspaceFolder}/.claude.json,target=/home/node/.claude.json,type=bind"
-	]
+	],
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
+			"version": "latest"
+		}
+	}
 }
