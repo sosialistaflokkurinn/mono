@@ -1,0 +1,119 @@
+{
+  "name": "XJ Monorepo",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/xj-mono",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-typescript-next",
+        "ms-vscode.vscode-json",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "typescript.suggest.autoImports": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "eslint.format.enable": true,
+        "eslint.codeActionsOnSave.mode": "problems",
+        "tailwindCSS.experimental.classRegex": [
+          "class:\\s*['\"]([^'\"]+)['\"]",
+          "className:\\s*['\"]([^'\"]+)['\"]"
+        ],
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "terminal.integrated.profiles.linux": {
+          "zsh": {
+            "path": "/bin/zsh"
+          }
+        },
+        "terminal.integrated.splitCwd": "workspaceRoot",
+        "terminal.integrated.tabs.enabled": true,
+        "terminal.integrated.tabs.location": "left",
+        "terminal.integrated.automationProfile.linux": {
+          "path": "/bin/zsh"
+        }
+      },
+      "tasks": [
+        {
+          "label": "Claude Code",
+          "type": "shell",
+          "command": "claude --dangerously-skip-permissions --continue",
+          "group": "build",
+          "presentation": {
+            "echo": true,
+            "reveal": "always",
+            "focus": false,
+            "panel": "new",
+            "group": "terminals"
+          },
+          "problemMatcher": [],
+          "runOptions": {
+            "runOn": "folderOpen"
+          }
+        },
+        {
+          "label": "Dev Server",
+          "type": "shell",
+          "command": "echo '🚀 Ready to start dev server. Run: pnpm dev' && zsh",
+          "group": "build", 
+          "presentation": {
+            "echo": false,
+            "reveal": "always",
+            "focus": false,
+            "panel": "new",
+            "group": "terminals"
+          },
+          "problemMatcher": [],
+          "runOptions": {
+            "runOn": "folderOpen"
+          }
+        },
+        {
+          "label": "Shell",
+          "type": "shell",
+          "command": "zsh",
+          "group": "build",
+          "presentation": {
+            "echo": false,
+            "reveal": "always", 
+            "focus": true,
+            "panel": "new",
+            "group": "terminals"
+          },
+          "problemMatcher": [],
+          "runOptions": {
+            "runOn": "folderOpen"
+          }
+        }
+      ]
+    }
+  },
+  "forwardPorts": [4200, 5434],
+  "portsAttributes": {
+    "4200": {
+      "label": "Web App (for cloudflared on host)",
+      "onAutoForward": "notify"
+    },
+    "5434": {
+      "label": "PostgreSQL",
+      "onAutoForward": "ignore"
+    }
+  },
+  "postStartCommand": "pnpm install && cd packages/db && pnpm db:push",
+  "postAttachCommand": {
+    "server": "echo '🚀 Container ready! Open a terminal and run: pnpm dev'"
+  },
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  },
+  "mounts": [
+    "source=xj-node-modules,target=${containerWorkspaceFolder}/node_modules,type=volume",
+    "source=${localWorkspaceFolder}/.claude,target=/home/node/.claude,type=bind"
+  ],
+  "workspaceFolder": "/workspaces/xj-mono"
+}

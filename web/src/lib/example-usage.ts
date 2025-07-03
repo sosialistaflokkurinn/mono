@@ -1,13 +1,12 @@
 // Example usage of @xj/utils and other new dependencies
 
-import { z } from "zod";
-
 import {
   isNonEmptyArray,
   normalizeEmail,
   safeFetch,
   safeZodParse,
 } from "@xj/utils";
+import { z } from "zod";
 
 // Example API response schema
 const UserSchema = z.object({

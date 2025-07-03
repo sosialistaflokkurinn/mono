@@ -2,85 +2,113 @@
 
 A TypeScript monorepo with TanStack Start, Drizzle ORM, and Kenni OIDC authentication. Includes complete kennitala integration for Icelandic applications.
 
-## ⚡ Quickstart
+## ⚡ Quickstart for VS Code + Claude Code
 
-Get up and running in 5 minutes:
+This project uses a **host/container split architecture** for optimal development with Claude Code. The container provides isolation and consistency, while the host manages networking and tunnels.
 
 ### Prerequisites
 
-- **Node.js 18+** and **pnpm**: `npm install -g pnpm`
-- **Docker**: For PostgreSQL database
-- **Cloudflare CLI**: `brew install cloudflared` (for tunnels)
+- **VS Code** with Dev Containers extension
+- **Docker Desktop** (for containerized development)  
+- **Claude Code CLI** (for AI assistance)
+- **Cloudflare CLI**: `brew install cloudflared` (for HTTPS tunnels on host)
 
-### 1. Setup Project
+### Architecture Overview
+
+**🖥️ HOST handles:**
+- HTTPS tunnels (cloudflared)
+- Docker container orchestration  
+- Network routing to containers
+
+**📦 CONTAINER handles:**
+- Node.js/pnpm environment
+- Vite development server
+- Database connections
+- Claude Code AI assistance
+
+*Why this split?* - Containers provide isolated, consistent environments while hosts handle networking complexity. This enables secure Claude Code usage with `--dangerously-skip-permissions` in a sandboxed environment.*
+
+### 1. Clone & Open in Container
 
 ```bash
-# Clone and install
 git clone <repository-url>
 cd xj-mono
-pnpm install
-
-# Copy environment template
-cp web/.env.example web/.env
+code .
 ```
 
-### 2. Configure Environment
+**Choose**: "Reopen in Container" when VS Code prompts. This will:
+- Build the development container with Node.js 20 + pnpm + dev tools
+- Start PostgreSQL database container automatically  
+- Install dependencies and push database schema
+- Launch Claude Code and shell
 
-Edit `web/.env` with your settings:
+*Everything runs in containers - no local setup required!*
+
+### 2. Start HTTPS Tunnel (Host)
+
+**In a separate terminal ON YOUR HOST** (not in VS Code):
 
 ```bash
-# Generate secure secrets (run these commands):
-SESSION_SECRET="$(openssl rand -base64 32)"
-JWT_SECRET="$(openssl rand -base64 32)"
-
-# Add your Kenni credentials:
-KENNI_CLIENT_ID=your-kenni-client-id
-KENNI_CLIENT_SECRET=your-kenni-client-secret
-KENNI_ISSUER_URL=https://idp.kenni.is/your-domain
+cd xj-mono
+node host-tunnel.mjs
 ```
 
-### 3. Start Development
+*Note: The tunnel and dev server can start in any order - the tunnel script waits for the dev server to be ready.*
+
+This creates a public HTTPS URL that routes to the container's port 4200:
+```
+🎉 Tunnel ready! Hostname: abc-123.trycloudflare.com
+✅ Updated VITE_HOSTNAME=abc-123.trycloudflare.com in web/.env file
+```
+
+*Why host-side tunnels?* - OAuth providers require public HTTPS URLs. Running cloudflared on the host avoids container networking complexity and ensures stable tunnel performance.*
+
+### 3. Start Development (Container)
+
+**In VS Code terminal** (inside container):
 
 ```bash
-# One command starts everything:
 pnpm dev
 ```
 
-This will:
+This starts Vite on port 4200 with:
+- ⚡ **Hot reload** enabled
+- 🔄 **Container→Host→Tunnel** routing  
+- 🔧 **All development tools** available
 
-1. 🐘 **Start PostgreSQL** in Docker container
-2. 🏗️ **Create database tables** automatically
-3. 🌐 **Launch tunnel** with public HTTPS URL
-4. 📝 **Update .env** with tunnel hostname
-5. ⚡ **Start dev server** on port 4200
-
-### 4. Configure Kenni (Required for Auth)
-
-Watch the console output for your tunnel URL like:
-
+**Traffic Flow:**
 ```
-🎉 Tunnel ready! Hostname: abc-123.trycloudflare.com
+Browser → abc-123.trycloudflare.com → Host:4200 → Container:4200 → Vite
 ```
 
-**Important**: Add this to your Kenni application settings:
+### 5. Configure OAuth Redirect (One-time)
 
-1. Go to Kenni dashboard → Your app → Settings
-2. Find "Allowed redirect URIs"
-3. Add:
-
+Add your tunnel URL to Kenni settings:
+1. **Kenni Dashboard** → Your app → Settings  
+2. **Allowed redirect URIs** → Add:
    ```
    https://abc-123.trycloudflare.com/api/auth/callback
    ```
 
-4. Save settings
+*Pro tip: Tunnel URLs change on restart. For production-like development, consider a stable tunnel or custom domain.*
 
-### 5. You're Ready! 🎉
+### 6. Launch Claude Code (Securely)
 
-- **Local app**: <http://localhost:4200>
-- **Public tunnel**: `https://your-tunnel.trycloudflare.com`
-- **Database**: `pnpm db:studio` (visual database browser)
+```bash
+# Inside VS Code container terminal:
+claude --dangerously-skip-permissions
+```
 
-Test authentication by clicking "Login with Kenni" and authenticating with your kennitala.
+*Why in container?* - The `--dangerously-skip-permissions` flag is safe here because Claude operates in an isolated container environment, not your host system.*
+
+### 🎉 You're Ready!
+
+- **Local dev**: `http://localhost:4200` (hot reload)
+- **Public HTTPS**: `https://abc-123.trycloudflare.com` (OAuth-ready)  
+- **Database UI**: `pnpm db:studio` (visual editor)
+- **AI Assistant**: Claude Code with full codebase access
+
+**Test it**: Visit your tunnel URL and click "Login with Kenni" - you should see the full OAuth flow working.
 
 ---
 
@@ -102,24 +130,22 @@ xj-mono/
 
 ## 🛠️ Development Commands
 
-| Command | Description |
-|---------|-------------|
-| `pnpm dev` | **Start everything** (database + tunnel + dev server) |
-| `pnpm db:up` | Start PostgreSQL database only |
-| `pnpm db:studio` | Open visual database browser |
-| `pnpm --filter=web dev:local` | Start dev server without tunnel |
-| `pnpm build` | Build all packages for production |
-| `pnpm lint` / `pnpm lint:fix` | Run/fix linting (oxlint) |
-| `pnpm type-check` | TypeScript compilation check |
+| Command                       | Description                                           |
+| ----------------------------- | ----------------------------------------------------- |
+| `pnpm dev`                    | **Start dev server** (in container)                   |
+| `pnpm build`                  | Build all packages for production                     |
+| `pnpm lint` / `pnpm lint:fix` | Run/fix linting (oxlint)                              |
+| `pnpm type-check`             | TypeScript compilation check                          |
+| `node host-tunnel.mjs`        | Start HTTPS tunnel (run on host)                     |
 
-### Database Commands
+### Database Commands (from packages/db)
 
-| Command | Description |
-|---------|-------------|
-| `pnpm db:push` | Push schema changes to database |
-| `pnpm db:generate` | Generate migrations (from packages/db) |
-| `pnpm db:migrate` | Run migrations (from packages/db) |
-| `pnpm db:down` | Stop PostgreSQL container |
+| Command                         | Description                            |
+| ------------------------------- | -------------------------------------- |
+| `cd packages/db && pnpm db:studio` | Open visual database browser           |
+| `cd packages/db && pnpm db:push`   | Push schema changes to database        |
+| `cd packages/db && pnpm db:generate` | Generate migrations                    |
+| `cd packages/db && pnpm db:migrate`  | Run migrations                         |
 
 ## 🔐 Authentication with Kenni
 
@@ -221,6 +247,7 @@ docker exec -it xj-postgres psql -U postgres -d xj
 ## 🎯 Technology Stack
 
 ### Frontend
+
 - **TanStack Start** - React meta-framework with SSR
 - **TanStack Router** - Type-safe file-based routing
 - **React 19** - Latest React with concurrent features
@@ -228,12 +255,14 @@ docker exec -it xj-postgres psql -U postgres -d xj
 - **React Aria Components** - Accessible UI components
 
 ### Backend
+
 - **TanStack Start Server Functions** - Type-safe server-side logic
 - **Drizzle ORM** - Type-safe SQL toolkit
 - **PostgreSQL 16** - Reliable database
 - **JWT Sessions** - Secure authentication with @oslojs/jwt
 
 ### Development
+
 - **Turbo** - Fast build system and task runner
 - **oxlint** - Ultra-fast Rust-based linter
 - **TypeScript 5** - Type safety across the stack
@@ -244,19 +273,21 @@ docker exec -it xj-postgres psql -U postgres -d xj
 ### Common Issues
 
 **Database connection failed:**
+
 ```bash
-# Check if container is running
+# Check if containers are running
 docker ps
 
-# Restart database
-pnpm db:down && pnpm db:up
+# Rebuild devcontainer (includes database)
+# In VS Code: Command Palette → "Dev Containers: Rebuild Container"
 
-# Recreate database and tables
-docker exec xj-postgres psql -U postgres -c "DROP DATABASE IF EXISTS xj; CREATE DATABASE xj;"
-pnpm db:push
+# Or manually recreate database
+docker exec xj-mono-devcontainer-db-1 psql -U postgres -c "DROP DATABASE IF EXISTS xj; CREATE DATABASE xj;"
+cd packages/db && pnpm db:push
 ```
 
 **Tunnel not working:**
+
 ```bash
 # Install cloudflared if missing
 brew install cloudflared
@@ -268,10 +299,12 @@ cloudflared tunnel --url http://localhost:4200
 ```
 
 **Port conflicts:**
-- Database runs on port **5434** (configurable in `packages/db/docker-compose.yml`)
+
+- Database runs on port **5434** (configurable in `.devcontainer/docker-compose.yml`)
 - Dev server runs on port **4200** (configurable in `web/vite.config.ts`)
 
 **Authentication errors:**
+
 - Verify Kenni credentials in `.env`
 - Check that `VITE_HOSTNAME` matches your tunnel URL
 - Ensure tunnel URL is registered in Kenni dashboard
@@ -279,13 +312,14 @@ cloudflared tunnel --url http://localhost:4200
 ### Getting Help
 
 1. Check if all containers are running: `docker ps`
-2. Verify environment variables are set correctly
-3. Check logs: `pnpm db:logs` for database issues
-4. Restart everything: `pnpm dev`
+2. Verify environment variables are set correctly in `web/.env`
+3. Check container logs: `docker logs <container-name>`
+4. Restart devcontainer: VS Code → "Dev Containers: Rebuild Container"
 
 ## 📝 Environment Variables Reference
 
 ### Required (Server-only)
+
 ```bash
 DATABASE_URL=postgresql://postgres:postgres@localhost:5434/xj
 SESSION_SECRET="32-character-secret"
@@ -296,12 +330,14 @@ KENNI_ISSUER_URL=https://idp.kenni.is/your-domain
 ```
 
 ### Optional
+
 ```bash
 POSTMARK_SERVER_API_TOKEN=your-postmark-token  # For email sending
 NODE_ENV=development                            # Environment mode
 ```
 
 ### Client-side (Public)
+
 ```bash
 VITE_HOSTNAME=your-tunnel-hostname.com         # Auto-set by tunnel script
 ```

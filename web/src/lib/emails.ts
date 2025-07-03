@@ -1,9 +1,8 @@
 import { render } from "@react-email/render";
-import { eq } from "drizzle-orm";
-import { fromSafePromise, ResultAsync } from "neverthrow";
-
 import { db, Email } from "@xj/db";
 import { safeFetch } from "@xj/utils";
+import { eq } from "drizzle-orm";
+import { fromSafePromise, ResultAsync } from "neverthrow";
 
 import { WelcomeEmail } from "~/emails/welcome";
 

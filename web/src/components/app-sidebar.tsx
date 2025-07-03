@@ -6,7 +6,7 @@ import {
   HomeIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
-import { useRouter, Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 
 // import { useAuth } from "~/lib/auth-provider";
 
@@ -120,7 +120,7 @@ export function AppSidebar() {
   const router = useRouter();
   const pathname = router.state.location.pathname;
   // const { user, isAuthenticated } = useAuth();
-  
+
   // TODO: Re-enable authentication check
   const user = { name: "Test User", role: "admin" };
   const isAuthenticated = true;

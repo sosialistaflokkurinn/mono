@@ -35,14 +35,6 @@
     "format": {
       "outputs": []
     },
-    "format:check": {},
-    "db:up": {
-      "cache": false,
-      "persistent": true
-    },
-    "tunnel:up": {
-      "cache": false,
-      "persistent": true
-    }
+    "format:check": {}
   }
 }

@@ -11,6 +11,7 @@
 import { createServerRootRoute } from '@tanstack/react-start/server'
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UiRouteImport } from './routes/ui'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AppRouteImport } from './routes/_app'
@@ -23,6 +24,11 @@ import { ServerRoute as ApiAuthCallbackServerRouteImport } from './routes/api/au
 
 const rootServerRouteImport = createServerRootRoute()
 
+const UiRoute = UiRouteImport.update({
+  id: '/ui',
+  path: '/ui',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
+  '/ui': typeof UiRoute
   '/dashboard': typeof AppDashboardRoute
   '/profile': typeof AppProfileRoute
 }
@@ -79,6 +86,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
+  '/ui': typeof UiRoute
   '/dashboard': typeof AppDashboardRoute
   '/profile': typeof AppProfileRoute
 }
@@ -88,20 +96,22 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/admin': typeof AdminRoute
   '/login': typeof LoginRoute
+  '/ui': typeof UiRoute
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/profile': typeof AppProfileRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/login' | '/dashboard' | '/profile'
+  fullPaths: '/' | '/admin' | '/login' | '/ui' | '/dashboard' | '/profile'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/login' | '/dashboard' | '/profile'
+  to: '/' | '/admin' | '/login' | '/ui' | '/dashboard' | '/profile'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/admin'
     | '/login'
+    | '/ui'
     | '/_app/dashboard'
     | '/_app/profile'
   fileRoutesById: FileRoutesById
@@ -111,6 +121,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AdminRoute: typeof AdminRoute
   LoginRoute: typeof LoginRoute
+  UiRoute: typeof UiRoute
 }
 export interface FileServerRoutesByFullPath {
   '/api/auth/callback': typeof ApiAuthCallbackServerRoute
@@ -144,6 +155,13 @@ export interface RootServerRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/ui': {
+      id: '/ui'
+      path: '/ui'
+      fullPath: '/ui'
+      preLoaderRoute: typeof UiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -231,6 +249,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AdminRoute: AdminRoute,
   LoginRoute: LoginRoute,
+  UiRoute: UiRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,9 +1,8 @@
 import { createServerFileRoute } from "@tanstack/react-start/server";
-import { eq } from "drizzle-orm";
-import { ok, safeTry } from "neverthrow";
-
 import { db, KenniLogin, User } from "@xj/db";
 import { exchangeCodeForTokens, parseIdTokenClaims } from "@xj/kenni";
+import { eq } from "drizzle-orm";
+import { ok, safeTry } from "neverthrow";
 
 import { env } from "~/lib/env";
 import { createSession } from "~/lib/jwt-session";

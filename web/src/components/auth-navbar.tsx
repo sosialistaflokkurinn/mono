@@ -4,7 +4,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
-import { useRouter, Link } from "@tanstack/react-router";
+import { Link, useRouter } from "@tanstack/react-router";
 
 // import { useAuth, useUserInitials } from "~/lib/auth-provider";
 
@@ -119,7 +119,7 @@ export function AuthNavbar() {
   // const { user, isAuthenticated, logout } = useAuth();
   // const userInitials = useUserInitials();
   const router = useRouter();
-  
+
   // TODO: Re-enable authentication
   const user = { name: "Test User", role: "admin" };
   const isAuthenticated = true;

@@ -5,8 +5,10 @@ import { Heading } from "~/components/ui/heading";
 
 function LoginPage() {
   const search = Route.useSearch();
-  const next: string = 
-    typeof search["next"] === "string" ? decodeURIComponent(search["next"]) : "/";
+  const next: string =
+    typeof search["next"] === "string"
+      ? decodeURIComponent(search["next"])
+      : "/";
 
   const handleKenniAuth = async () => {
     // For now, redirect to a placeholder URL
@@ -35,7 +37,7 @@ function LoginPage() {
         </div>
 
         <div className="mt-8">
-          <form 
+          <form
             onSubmit={(e) => {
               e.preventDefault();
               handleKenniAuth();

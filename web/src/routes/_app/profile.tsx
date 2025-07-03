@@ -3,13 +3,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { Heading } from "~/components/ui/heading";
+
 // import { useAuth, useUserInitials } from "~/lib/auth-provider";
 
 function ProfilePage() {
   // TODO: Re-enable authentication hooks
   // const { user, isAuthenticated } = useAuth();
   // const userInitials = useUserInitials();
-  
+
   // Placeholder data for now
   const user = { name: "Test User", role: "user", userId: "test-id-123" };
   const isAuthenticated = true;

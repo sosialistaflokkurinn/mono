@@ -1,6 +1,5 @@
-import { eq } from "drizzle-orm";
-
 import { db, User } from "@xj/db";
+import { eq } from "drizzle-orm";
 
 import { sendWelcomeEmail } from "./emails";
 

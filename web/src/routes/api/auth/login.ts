@@ -1,5 +1,4 @@
 import { createServerFileRoute } from "@tanstack/react-start/server";
-
 import {
   createKenniAuthorizationUrl,
   generateCodeVerifier,

@@ -7,7 +7,6 @@ import type { ServerUser } from "./server-auth";
 interface AuthContextValue {
   user: ServerUser | null;
   isAuthenticated: boolean;
-  logout: () => void;
 }
 
 // Create context
@@ -28,22 +27,9 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
-  // Simple logout that makes a POST request to logout endpoint
-  const logout = async () => {
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      // The server will redirect us to login page
-      globalThis.location.href = "/login";
-    } catch {
-      // Fallback redirect if fetch fails
-      globalThis.location.href = "/login";
-    }
-  };
-
   const contextValue: AuthContextValue = {
     user: initialUser,
     isAuthenticated: !!initialUser,
-    logout,
   };
 
   return (

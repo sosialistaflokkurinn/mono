@@ -4,10 +4,9 @@ import {
   JWTRegisteredClaims,
   parseJWT,
 } from "@oslojs/jwt";
+import { safeFetch, safeZodParse } from "@xj/utils";
 import { err, ok, safeTry } from "neverthrow";
 import { z } from "zod";
-
-import { safeFetch, safeZodParse } from "@xj/utils";
 
 // OIDC Discovery document structure
 const OIDCConfigSchema = z.object({

@@ -58,7 +58,7 @@ export const env = createEnv({
     SENTRY_PROJECT: process.env["SENTRY_PROJECT"],
     SENTRY_AUTH_TOKEN: process.env["SENTRY_AUTH_TOKEN"],
     NODE_ENV: process.env["NODE_ENV"],
-    
+
     // Client variables (from import.meta.env)
     VITE_HOSTNAME: import.meta.env["VITE_HOSTNAME"],
     VITE_SENTRY_DSN: import.meta.env["VITE_SENTRY_DSN"],

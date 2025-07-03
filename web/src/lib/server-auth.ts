@@ -1,9 +1,8 @@
-import { createServerFn } from "@tanstack/react-start";
-import { eq } from "drizzle-orm";
 import { redirect } from "@tanstack/react-router";
-
+import { createServerFn } from "@tanstack/react-start";
 import { db, User } from "@xj/db";
 import { safeZodParse } from "@xj/utils";
+import { eq } from "drizzle-orm";
 
 import { getSession, sessionSchema } from "./jwt-session";
 
@@ -17,7 +16,7 @@ function redirectToLogin(currentPath?: string): never {
   const loginUrl = currentPath
     ? `/login?next=${encodeURIComponent(currentPath)}`
     : "/login";
-  
+
   // Use TanStack Router's redirect pattern
   throw redirect({
     to: loginUrl,
@@ -69,21 +68,23 @@ async function requireServerAuth(currentPath?: string): Promise<ServerUser> {
 /**
  * Server function to get current user data
  */
-export const getServerUser = createServerFn({ method: "GET" }).handler(async () => {
-  const sessionResult = await getSession();
+export const getServerUser = createServerFn({ method: "GET" }).handler(
+  async () => {
+    const sessionResult = await getSession();
 
-  if (sessionResult.isErr()) {
-    return null;
-  }
+    if (sessionResult.isErr()) {
+      return null;
+    }
 
-  const session = sessionResult.value;
+    const session = sessionResult.value;
 
-  return {
-    userId: session.userId,
-    name: session.name,
-    role: session.role,
-  };
-});
+    return {
+      userId: session.userId,
+      name: session.name,
+      role: session.role,
+    };
+  },
+);
 
 /**
  * Server function to require authentication and return user from database

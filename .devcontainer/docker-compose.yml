@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - xj-node-modules:/workspaces/xj-mono/node_modules
+      - xj-web-node-modules:/workspaces/xj-mono/web/node_modules
+      - xj-packages-db-node-modules:/workspaces/xj-mono/packages/db/node_modules
+    command: sleep infinity
+    ports:
+      - "4200:4200"
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/xj
+
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: xj
+    ports:
+      - "5434:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  xj-node-modules:
+  xj-web-node-modules:
+  xj-packages-db-node-modules:
+  postgres-data:

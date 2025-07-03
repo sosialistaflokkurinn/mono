@@ -44,6 +44,7 @@ jspm_packages/
 
 # Optional npm cache directory
 .npm
+.pnpm-store
 
 # Optional eslint cache
 .eslintcache
@@ -124,3 +125,6 @@ Thumbs.db
 # Database
 *.db
 *.sqlite
+
+# Claude
+.claude

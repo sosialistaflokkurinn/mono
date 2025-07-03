@@ -1,14 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute("/")({
   component: Home,
-})
+});
 
 function Home() {
   return (
-    <main className="min-h-dvh w-screen flex items-center justify-center flex-col gap-y-4 p-4">
+    <main className="flex min-h-dvh w-screen flex-col items-center justify-center gap-y-4 p-4">
       <img
-        className="max-w-sm w-full"
+        className="w-full max-w-sm"
         src="https://raw.githubusercontent.com/tanstack/tanstack.com/main/src/images/splash-dark.png"
         alt="TanStack Logo"
       />
@@ -23,5 +23,5 @@ function Home() {
         Docs
       </a>
     </main>
-  )
+  );
 }
