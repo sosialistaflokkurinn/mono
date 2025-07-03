@@ -1,4 +1,0 @@
-{
-  "extends": ["../../oxlint-base.json"],
-  "ignorePatterns": ["node_modules", "dist", "**/*.d.ts", "drizzle/**"]
-}

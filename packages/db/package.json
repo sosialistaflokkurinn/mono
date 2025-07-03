@@ -1,28 +1,29 @@
 {
-  "name": "@xj/db",
-  "version": "0.0.0",
-  "private": true,
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "scripts": {
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "lint": "oxlint --quiet",
-    "type-check": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@paralleldrive/cuid2": "^2.2.2",
-    "drizzle-orm": "^0.44.2",
-    "pg": "^8.16.3"
-  },
-  "devDependencies": {
-    "@types/node": "^24.0.10",
-    "@types/pg": "^8.15.4",
-    "drizzle-kit": "^0.31.4",
-    "typescript": "^5.8.3"
-  }
+	"name": "@xj/db",
+	"version": "0.0.0",
+	"private": true,
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"scripts": {
+		"db:generate": "drizzle-kit generate",
+		"db:migrate": "drizzle-kit migrate",
+		"db:push": "drizzle-kit push",
+		"db:studio": "drizzle-kit studio",
+		"format": "biome format --write .",
+		"format:check": "biome format .",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --fix .",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@paralleldrive/cuid2": "^2.2.2",
+		"drizzle-orm": "^0.44.2",
+		"pg": "^8.16.3"
+	},
+	"devDependencies": {
+		"@types/node": "^24.0.10",
+		"@types/pg": "^8.15.4",
+		"drizzle-kit": "^0.31.4",
+		"typescript": "^5.8.3"
+	}
 }

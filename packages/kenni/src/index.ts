@@ -1,1 +1,1 @@
-export * from "./kenni";
+export * from "./kenni.ts";

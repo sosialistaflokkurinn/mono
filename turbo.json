@@ -31,10 +31,6 @@
     },
     "type-check": {
       "dependsOn": ["^type-check"]
-    },
-    "format": {
-      "outputs": []
-    },
-    "format:check": {}
+    }
   }
 }

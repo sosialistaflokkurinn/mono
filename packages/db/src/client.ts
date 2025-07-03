@@ -4,11 +4,10 @@ import { Pool } from "pg";
 import * as schema from "./schema";
 
 const connectionString =
-  process.env["DATABASE_URL"] ??
-  "postgresql://postgres:postgres@localhost:5434/xj";
+	process.env["DATABASE_URL"] ?? "postgresql://postgres:postgres@localhost:5434/xj";
 
 const pool = new Pool({
-  connectionString,
+	connectionString,
 });
 
 export const db = drizzle({ client: pool, schema, casing: "snake_case" });

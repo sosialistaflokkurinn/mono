@@ -1,29 +1,25 @@
 {
-  "name": "xj",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "license": "ISC",
-  "author": "Jökull Sólberg",
-  "type": "module",
-  "main": "index.js",
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "format": "prettier --write \"*.{js,json,md,ts,mjs}\" && turbo format",
-    "format:check": "prettier --check \"*.{js,json,md,ts,mjs}\" && turbo format:check",
-    "lint": "turbo lint",
-    "lint:fix": "turbo lint:fix",
-    "type-check": "turbo type-check"
-  },
-  "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "^4.4.2",
-    "knip": "^5.61.3",
-    "oxlint": "^1.5.0",
-    "prettier": "^3.6.2",
-    "prettier-plugin-packagejson": "^2.5.17",
-    "prettier-plugin-tailwindcss": "^0.6.13",
-    "turbo": "^2.5.4"
-  },
-  "packageManager": "pnpm@10.10.0"
+	"name": "xj",
+	"version": "1.0.0",
+	"description": "",
+	"keywords": [],
+	"license": "ISC",
+	"author": "Jökull Sólberg",
+	"type": "module",
+	"main": "index.js",
+	"scripts": {
+		"build": "turbo build",
+		"dev": "turbo dev",
+		"format": "biome format --write .",
+		"format:check": "biome format .",
+		"lint": "turbo lint",
+		"lint:fix": "turbo lint:fix",
+		"type-check": "turbo type-check"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.0.6",
+		"knip": "^5.61.3",
+		"turbo": "^2.5.4"
+	},
+	"packageManager": "pnpm@10.10.0"
 }

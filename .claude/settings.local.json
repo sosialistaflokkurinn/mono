@@ -27,7 +27,8 @@
       "Bash(pnpm run lint:*)",
       "WebFetch(domain:buildui.com)",
       "WebFetch(domain:www.jollyui.dev)",
-      "WebFetch(domain:www.jollyui.dev)"
+      "WebFetch(domain:www.jollyui.dev)",
+      "Bash(rm:*)"
     ],
     "deny": []
   }
